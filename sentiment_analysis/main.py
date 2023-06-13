@@ -110,31 +110,32 @@ class SentimentAnalyzer:
         return {"input_ids": token_ids, "attention_mask": attention_mask}
 
 
-class Analyze:
-    def __init__(self, words):
+# Load the model
+analyzer = SentimentAnalyzer("model_sentiment.h5")
+# Scrape reviews
+scraper = ReviewScraper()
+# Flask
+app = Flask(__name__)
+
+def analyze(self, words):
+    try:
         search = words.replace("", "+")
-        # Load the model
-        analyzer = SentimentAnalyzer("model_sentiment.h5")
-        # Scrape reviews
-        scraper = ReviewScraper()
-        self.reviews = scraper.scrape(
+        reviews = scraper.scrape(
             f"https://www.google.com/search?client=firefox-b-d&q={search}"
         )
         # Add sentiment predictions to reviews
-        for name, review in self.reviews.items():
+        for name, review in reviews.items():
             sentiment = analyzer.predict_sentiment(review['isi'])
             review["sentimen"] = sentiment
+    except:
+        return None
 
-    def get_result(self):
-        return self.reviews.items()
-
-
-app = Flask(__name__)
+    return self.reviews.items()
 
 @app.route('/analyze_sentiment')
 def get_sentiment():
     words = request.args.get("words")
-    result = Analyze(words)
+    result = analyze(words)
 
     if not result:
         return {"message": "Location not available"}, 404
