@@ -115,7 +115,7 @@ scraper = ReviewScraper()
 # Flask
 app = Flask(__name__)
 
-def analyze(self, words):
+def analyze(words):
     try:
         search = words.replace("", "+")
         reviews = scraper.scrape(
