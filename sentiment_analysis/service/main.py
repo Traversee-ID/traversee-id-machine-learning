@@ -25,7 +25,7 @@ class ReviewScraper:
 
         self.driver.get(url)
 
-        review_btn = WebDriverWait(self.driver, 5).until(
+        review_btn = WebDriverWait(self.driver, 3).until(
             EC.presence_of_element_located((By.CLASS_NAME, "hqzQac"))
         )
 
@@ -37,15 +37,15 @@ class ReviewScraper:
 
         review_btn.click()
 
-        scrollable_div = WebDriverWait(self.driver, 10).until(
+        scrollable_div = WebDriverWait(self.driver, 3).until(
             EC.presence_of_element_located((By.CLASS_NAME, "review-dialog-list"))
         )
 
-        for x in range(10):
+        for x in range(5):
             self.driver.execute_script(
                 "arguments[0].scrollTop = arguments[0].scrollHeight", scrollable_div
             )
-            time.sleep(1)
+            time.sleep(0.5)
 
         soup = BeautifulSoup(self.driver.page_source, "lxml")
 
