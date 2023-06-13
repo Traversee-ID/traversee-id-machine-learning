@@ -1,0 +1,11 @@
+.env
+.venv
+env/
+venv/
+env.bak/
+venv.bak/
+__pycache__/
+.DS_Store
+._*
+geckodriver.log
+model_sentiment.h5
