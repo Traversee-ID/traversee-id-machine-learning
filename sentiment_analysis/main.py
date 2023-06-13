@@ -1,16 +1,14 @@
 from flask import Flask, request
-import json
 from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox, FirefoxOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from keras.models import load_model
+from transformers import TFBertModel, BertTokenizer
 import time
 import re
 import numpy as np
-from keras.models import load_model
-from transformers import TFBertModel, BertTokenizer
-
 
 class ReviewScraper:
     def __init__(self):
