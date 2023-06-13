@@ -138,7 +138,7 @@ def get_sentiment():
     if not result:
         return {"message": "Location not available"}, 404
 
-    return {"data": list(result.get_result())}, 200
+    return {"data": dict(result)}, 200
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=8080)
