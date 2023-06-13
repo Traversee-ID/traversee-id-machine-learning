@@ -130,7 +130,7 @@ def analyze(self, words):
     except:
         return None
 
-    return self.reviews.items()
+    return reviews.items()
 
 @app.route('/analyze_sentiment')
 def get_sentiment():
