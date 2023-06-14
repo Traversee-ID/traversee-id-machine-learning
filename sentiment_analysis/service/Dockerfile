@@ -11,4 +11,4 @@ RUN apt-get update && \
     apt-get install -y python3-pip && \
     pip3 install --no-cache-dir -r requirements.txt
 
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
+CMD flask --app main run --port 8080
