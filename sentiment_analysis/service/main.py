@@ -14,59 +14,51 @@ class ReviewScraper:
     def __init__(self):
         # Set up Firefox options
         options = FirefoxOptions()
-        options.add_argument("-headless")
-        options.set_preference("intl.accept_languages", "id-ID")
+        options.add_argument('-headless')
+        options.set_preference('intl.accept_languages', 'id-ID')
 
         # Initialize WebDriver
         self.driver = Firefox(options=options)
+        self.waiter = WebDriverWait(self.driver, 10)
 
     def scrape(self, url):
         self.articles = {}
 
         self.driver.get(url)
 
-        review_btn = WebDriverWait(self.driver, 3).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "hqzQac"))
-        )
+        review_btn = self.waiter.until(
+            EC.presence_of_element_located((By.CLASS_NAME, 'hqzQac')))
 
         # Close cookie popup
         try:
-            self.driver.find_element(By.CLASS_NAME, "L2AGLb").click()
+            self.driver.find_element(By.CLASS_NAME, 'L2AGLb').click()
         except:
             pass
 
         review_btn.click()
 
-        scrollable_div = WebDriverWait(self.driver, 3).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "review-dialog-list"))
-        )
+        scrollable_div = self.waiter.until(
+            EC.presence_of_element_located((By.CLASS_NAME, 'review-dialog-list')))
 
-        for x in range(5):
+        for x in range(3):
             self.driver.execute_script(
-                "arguments[0].scrollTop = arguments[0].scrollHeight", scrollable_div
-            )
-            time.sleep(0.5)
+                "arguments[0].scrollTop = arguments[0].scrollHeight", scrollable_div)
+            self.waiter.until(
+                EC.invisibility_of_element_located((By.CLASS_NAME, 'jfk-activityIndicator')))
 
         soup = BeautifulSoup(self.driver.page_source, "lxml")
 
-        for item in soup.select(".WMbnJf"):
-            div_isi = item.select_one(".review-full-text")
+        for item in soup.select('.WMbnJf'):
+            div_isi = item.select_one('.review-full-text')
             if not div_isi:
-                div_isi = item.select_one(".Jtu6Td span span")
-            nama = item.select_one(".TSUbDb").text
-            gambar = item.select_one(".lDY1rd").get("src")
-            like = item.select_one(".QWOdjf").text
-            rating = self.extract_first_number(
-                item.select_one(".lTi8oc").get("aria-label")
-            )
+                div_isi = item.select_one('.Jtu6Td span span')
+            nama = item.select_one('.TSUbDb').text
+            gambar = item.select_one('.lDY1rd').get('src')
+            like = item.select_one('.QWOdjf').text
+            rating = self.extract_first_number(item.select_one('.lTi8oc').get('aria-label'))
             isi = div_isi.text
             if nama not in self.articles:
-                self.articles[nama] = {
-                    "isi": isi,
-                    "rating": rating,
-                    "gambar": gambar,
-                    "like": like,
-                }
+                self.articles[nama] = {'isi': isi, 'rating': rating, 'gambar': gambar, 'like': like}
 
         return self.articles
 
