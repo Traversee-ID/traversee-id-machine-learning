@@ -8,3 +8,7 @@ __pycache__/
 .DS_Store
 ._*
 instance/
+item_encoder_classes.npy
+user_encoder_classes.npy
+tokenizer.pickle
+recommendation_model.h5
