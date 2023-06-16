@@ -158,7 +158,9 @@ class Recommender(tf.keras.Model):
 
         return recomendations
 
-rec = Recommender('recommendation_model.h5', 'user_encoder_classes.npy', 'item_encoder_classes.npy', 'tokenizer.pickle', generate_dataset(), 500)
+dataset = generate_dataset()
+generate_model(dataset)
+rec = Recommender('recommendation_model.h5', 'user_encoder_classes.npy', 'item_encoder_classes.npy', 'tokenizer.pickle', dataset, 500)
 
 app = Flask(__name__)
 
