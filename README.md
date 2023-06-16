@@ -35,6 +35,9 @@ Our model incorporates a sentiment classification feature that focuses on analyz
 
 The model used is a sentiment classification model based on BERT (Bidirectional Encoder Representations from Transformers), specifically the `indobenchmark/indobert-base-p1` variant pretrained on Indonesian text. It tokenizes input text reviews and passes them through the BERT model to obtain contextualized representations. Dropout layers and dense layers with ReLU activation are employed to prevent overfitting and learn higher-level features from the BERT representations. The final dense layer with softmax activation produces probabilities for sentiment classes. The model is trained using Sparse Categorical Crossentropy loss and Adam optimizer, iterating for 10 epochs with a batch size of 16. The trained model is then saved in `.h5` format for future usage and deployment.
 
+We distill the above model using its predictions. The architecture are pretty similar, only that
+it uses TFDistilBertModel as the base model. The base model itself is pretrained from 'afbudiman/indobert-distilled-optimized-for-classification'. Since both teacher and student model are too large to put on Github, we upload them separately at https://drive.google.com/drive/folders/1_d4opY3uH8HtPVCTDG6fSFYhNyb6Kwsn?usp=sharing.
+
 ## Dataset
 
 The data used for sentiment analysis in our system is obtained through web scraping from Google reviews. The reviews are then manually labeled for sentiment analysis purposes. The training dataset consists of a total of 4,030 rows of reviews collected from various tourist destinations.
